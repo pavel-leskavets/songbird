@@ -1,25 +1,22 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import uuid from 'react-uuid';
-import { makeStyles, Typography, Box } from '@material-ui/core';
-import birdsData from '../data/BirdsData';
+import { makeStyles, Typography, Box, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   header: {
-    paddingTop: '25px'
+    paddingTop: '5px'
   },
   title: {
     color: '#128a73'
   },
   questionThemes: {
-    margin: '.6rem 0',
+    margin: '.8rem 0',
     backgroundColor: '#128a73',
     borderRadius: '5px'
   }
 }));
 
-
-const Header = () => {
+const Header = ({categories}) => {
   const classes = useStyles();
 
   return (
@@ -33,7 +30,7 @@ const Header = () => {
           </Grid>
         </Grid>
         <Grid container item justify="space-evenly" xs={12} className={classes.questionThemes}>
-          {birdsData.categories
+          {categories
             .map(category => <Grid container justify="center" item xs={2} key={uuid()}>{category}</Grid>)}
         </Grid>
       </Grid>

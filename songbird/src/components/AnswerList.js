@@ -1,29 +1,47 @@
 import React from 'react';
-import { List, ListItem, ListItemText, makeStyles  } from '@material-ui/core';
+import { List, ListItem, ListItemText, Grid, makeStyles  } from '@material-ui/core';
 import uuid from 'react-uuid';
+
 import birdsData from '../data/BirdsData';
 
 const useStyles = makeStyles(() => ({
+  container: {
+    width: '100%',
+    marginTop: '1rem',
+    backgroundColor: '#212120',
+    borderRadius: '5px',
+    border: '1px solid #212120'
+  },
+  list: {
+    width: '100%',
+    padding: 0
+  },
   listItem: {
     width: '100%',
-    maxWidth: '300px',
     '&:hover': {
-      backgroundColor: '#ccc',
+      backgroundColor: '#181818',
+      borderRadius: '5px',
     },
   },
 }));
 
 
-const AnswerList = () => {
+const AnswerList = ({currentBird, currentCategory}) => {
   const classes = useStyles();
+  const onClick = (birdId) => {
+    birdId === currentBird.id ? console.log('yes') : console.log('no')
+  }
+
   return (
-    <List component="nav" aria-label="main mailbox folders">
-      {birdsData.birds.map(item => {
-        return (
-          <ListItem key={uuid()}><ListItemText className={classes.listItem} primary={item[0].name}/></ListItem>
-        )
-      })}
-    </List>
+   <Grid container spacing={3} className={classes.container}>
+     <List component="nav" aria-label="main mailbox folders" className={classes.list}>
+       {currentCategory.map(item => {
+         return (
+           <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => onClick(item.id)}><ListItemText primary={item.name}/></ListItem>
+         )
+       })}
+     </List>
+   </Grid>
   );
 };
 
