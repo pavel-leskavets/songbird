@@ -5,13 +5,13 @@ import AnswerList from './AnswerList';
 import BirdDescription from './BirdDescription';
 
 
-const GameField = ({ currentBird, currentCategory }) => {
+const GameField = ({ randomBird, currentCategory, isGuessed, buttonHandler }) => {
   return (
     <>
-      <CurrentQuestion currentBird={currentBird}/>
+      <CurrentQuestion randomBird={randomBird} isGuessed={isGuessed}/>
       <Grid container spacing={3}>
-        <Grid item xs={6}><AnswerList currentBird={currentBird} currentCategory={currentCategory}/></Grid>
-        <Grid item xs={6}><BirdDescription currentBird={currentBird}/></Grid>
+        <Grid item xs={6}><AnswerList randomBird={randomBird} currentCategory={currentCategory} buttonHandler={buttonHandler}/></Grid>
+        <Grid item xs={6}><BirdDescription randomBird={randomBird}/></Grid>
       </Grid>
     </>
   );

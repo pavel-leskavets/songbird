@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Container, Grid, makeStyles } from '@material-ui/core';
 
 import Header from '../components/Header';
@@ -17,17 +17,33 @@ const useStyles = makeStyles(() => ({
 
 
 const Main = () => {
-  const [currentLevel, setLevel] = useState(0);
+  const [currentLevel, setCurrentLevel] = useState(0);
+  const [randomBird, setRandomBird] = useState(null);
+  const [isGuessed, setIsGuessed] = useState(false)
   const classes = useStyles();
-  const getRandomBird = () => birdsData.birds[currentLevel][Math.floor(Math.random() * birdsData.birds[currentLevel].length)];
+
+  const buttonHandler = (value) => {
+    setIsGuessed(value);
+  }
+
+  const changeLevel = () => {
+    setIsGuessed(false);
+    setCurrentLevel(currentLevel === birdsData.birds.length - 1 ? 0 : currentLevel + 1)
+  };
+
+
+  useEffect(() => {
+    const currentBird = birdsData.birds[currentLevel][Math.floor(Math.random() * birdsData.birds[currentLevel].length)];
+    setRandomBird(currentBird)
+  }, [currentLevel])
 
   return (
     <Container maxWidth="lg">
-      <Header categories={birdsData.categories}/>
-      <GameField currentBird={getRandomBird} currentCategory={birdsData.birds[currentLevel]}/>
+      <Header categories={birdsData.categories} currentLevel={currentLevel}/>
+      <GameField randomBird={randomBird} currentCategory={birdsData.birds[currentLevel]} isGuessed={isGuessed} buttonHandler={buttonHandler}/>
       <Grid container spacing={3} className={classes.buttonContainer}>
-        <Button className={classes.button} variant="contained" color="primary"
-                onClick={() => setLevel(currentLevel === birdsData.birds.length - 1 ? 1 : currentLevel + 1)}>
+        <Button className={classes.button} variant="contained" color="primary" disabled={!isGuessed}
+                onClick={() => changeLevel()}>
           Next Level
         </Button>
       </Grid>

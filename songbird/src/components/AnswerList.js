@@ -2,8 +2,6 @@ import React from 'react';
 import { List, ListItem, ListItemText, Grid, makeStyles  } from '@material-ui/core';
 import uuid from 'react-uuid';
 
-import birdsData from '../data/BirdsData';
-
 const useStyles = makeStyles(() => ({
   container: {
     width: '100%',
@@ -26,18 +24,16 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-const AnswerList = ({currentBird, currentCategory}) => {
+const AnswerList = ({randomBird, currentCategory, buttonHandler}) => {
   const classes = useStyles();
-  const onClick = (birdId) => {
-    birdId === currentBird.id ? console.log('yes') : console.log('no')
-  }
+  const checkAnswer = (birdId) => buttonHandler(birdId === randomBird.id);
 
   return (
    <Grid container spacing={3} className={classes.container}>
      <List component="nav" aria-label="main mailbox folders" className={classes.list}>
        {currentCategory.map(item => {
          return (
-           <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => onClick(item.id)}><ListItemText primary={item.name}/></ListItem>
+           <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}><ListItemText primary={item.name}/></ListItem>
          )
        })}
      </List>

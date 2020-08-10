@@ -11,29 +11,41 @@ const useStyles = makeStyles(() => ({
   },
   questionThemes: {
     margin: '.8rem 0',
+    backgroundColor: '#128a73'
+    },
+  activeCategory: {
+    margin: '.8rem 0',
     backgroundColor: '#128a73',
-    borderRadius: '5px'
+    opacity: '.75',
   }
 }));
 
-const Header = ({categories}) => {
+const Header = ({ categories, currentLevel }) => {
   const classes = useStyles();
 
   return (
-      <Grid container spacing={3} className={classes.header}>
-        <Grid container item justify="space-evenly" alignItems='center' xs={12}>
-          <Grid item xs={6}>
-            <Typography variant="h3">Song<span className={classes.title}>Bird</span></Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Box textAlign="right" fontSize={20}>Score: 25</Box>
-          </Grid>
+    <Grid container spacing={3} className={classes.header}>
+      <Grid container item justify="space-evenly" alignItems='center' xs={12}>
+        <Grid item xs={6}>
+          <Typography variant="h3">Song<span className={classes.title}>Bird</span></Typography>
         </Grid>
-        <Grid container item justify="space-evenly" xs={12} className={classes.questionThemes}>
-          {categories
-            .map(category => <Grid container justify="center" item xs={2} key={uuid()}>{category}</Grid>)}
+        <Grid item xs={6}>
+          <Box textAlign="right" fontSize={20}>Score: 25</Box>
         </Grid>
       </Grid>
+        {categories
+          .map((category, idx) => {
+            return (
+              <Grid container
+                    justify="center"
+                    item xs={2}
+                    key={uuid()}
+                    className={idx === currentLevel ? classes.activeCategory : classes.questionThemes}>
+                {category}
+              </Grid>
+            );
+          })}
+    </Grid>
   );
 };
 

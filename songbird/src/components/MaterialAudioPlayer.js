@@ -49,12 +49,12 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const MaterialAudioPlayer = ({width}) => {
+const MaterialAudioPlayer = ({width, src}) => {
   return <AudioPlayer elevation={1}
                       useStyles={useStyles}
                       width={`${width}%`}
                       variation="primary"
-                      debug={false} src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"/>
+                      debug={false} src={src}/>
 }
 
 export default MaterialAudioPlayer;

@@ -21,18 +21,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 
-const CurrentQuestion = ({currentBird}) => {
+const CurrentQuestion = ({randomBird, isGuessed}) => {
   const classes = useStyles();
 
   return (
     <Grid container alignItems="center" justify="space-between" spacing={3} className={classes.container}>
       <Grid item xs={3}>
-        <img width="300px" height="200px" src="images/cat.jpg" alt="act"/>
+        {isGuessed && <img width="300px" height="200px" src="images/cat.jpg" alt="act"/>}
+        {!isGuessed && <img width="300px" height="200px" src="images/photo.jpg" alt="act"/>}
       </Grid>
       <Grid item xs={9}>
         <Box display='flex' flexDirection='column' alignItems="center" className={classes.audioPlayerContainer}>
-          <h3 className={classes.questionTitleBox}>{currentBird.name}</h3>
-          <MaterialAudioPlayer width={95}/>
+          {!!randomBird && <h3 className={classes.questionTitleBox}>{ isGuessed ? randomBird.name : '*******'}</h3>}
+          <MaterialAudioPlayer width={95} src={randomBird ? randomBird.audio : ''}/>
         </Box>
       </Grid>
     </Grid>

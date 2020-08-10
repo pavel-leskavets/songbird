@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, makeStyles, Grid } from '@material-ui/core';
-import birdsData from '../data/BirdsData';
 import MaterialAudioPlayer from './MaterialAudioPlayer';
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +28,7 @@ const useStyles = makeStyles(() => ({
 
 
 
-const BirdDescription = ({currentBird}) => {
+const BirdDescription = ({randomBird}) => {
   const classes = useStyles();
 
   return (
@@ -39,13 +38,13 @@ const BirdDescription = ({currentBird}) => {
       </Grid>
       <Grid item xs={7}>
         <Box display='flex' flexDirection='column' alignItems="center" className={classes.audioPlayerContainer}>
-          <h3 className={classes.questionTitleBox}>{currentBird.name}</h3>
-          <h4 className={classes.questionTitleBox}>{currentBird.species}</h4>
-          <MaterialAudioPlayer width={95}/>
+          {!!randomBird && <h3 className={classes.questionTitleBox}>{randomBird.name}</h3>}
+          {!!randomBird && <h4 className={classes.questionTitleBox}>{randomBird.species}</h4>}
+          <MaterialAudioPlayer width={95} src={randomBird ? randomBird.audio : ''}/>
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <p className={classes.birdsDescription}>{currentBird.description}</p>
+        {!!randomBird && <p className={classes.birdsDescription}>{randomBird.description}</p>}
       </Grid>
     </Grid>
   );
