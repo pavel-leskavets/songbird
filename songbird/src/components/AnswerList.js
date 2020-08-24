@@ -1,5 +1,6 @@
-import React from 'react';
-import { List, ListItem, ListItemText, Grid, makeStyles  } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { List, ListItem, ListItemText, Grid, makeStyles } from '@material-ui/core';
+import Brightness1Icon from '@material-ui/icons/Brightness1';
 import uuid from 'react-uuid';
 
 const useStyles = makeStyles(() => ({
@@ -18,26 +19,71 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     '&:hover': {
       backgroundColor: '#181818',
-      borderRadius: '5px',
-    },
+      borderRadius: '5px'
+    }
   },
+  icons: {
+    width: '.9rem',
+    height: '.9rem',
+    paddingRight: '5px',
+    color: '#303030'
+  },
+  wrongAnswerIcon: {
+    color: '#a60b00'
+  },
+  correctAnswerIcon: {
+    color: '#128a73'
+  }
 }));
 
+const pointsStep = 1;
+const initialPoints = 5;
+let selectedIds = [];
 
-const AnswerList = ({randomBird, currentCategory, buttonHandler}) => {
+const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandler, playerRef, isGuessed, score, setScore }) => {
+  const [pointPerAnswer, setPointPerAnswer] = useState(initialPoints);
   const classes = useStyles();
-  const checkAnswer = (birdId) => buttonHandler(birdId === randomBird.id);
+
+  const playAudio = (isRightAnswer) => {
+    const audio = document.createElement('audio');
+    audio.src = isRightAnswer ? './sounds/success.wav' : './sounds/error.wav';
+    audio.play().then();
+  };
+
+  const checkAnswer = (birdId) => {
+    if (!selectedIds.includes(birdId) && !isGuessed) {
+      const isRightAnswer = birdId === randomBird.id;
+      if (isRightAnswer) {
+        playerRef.current.audio.current.pause();
+        setScore(score + pointPerAnswer);
+        setPointPerAnswer(initialPoints);
+      } else {
+        setPointPerAnswer(pointPerAnswer - pointsStep);
+      }
+      buttonHandler(isRightAnswer);
+      playAudio(isRightAnswer);
+      setSelectedBird(currentCategory.find(item => item.id === birdId));
+    }
+    selectedIds = [...selectedIds, birdId];
+  };
+
+  useEffect(() => {
+    selectedIds = [];
+  }, [currentCategory]);
 
   return (
-   <Grid container spacing={3} className={classes.container}>
-     <List component="nav" aria-label="main mailbox folders" className={classes.list}>
-       {currentCategory.map(item => {
-         return (
-           <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}><ListItemText primary={item.name}/></ListItem>
-         )
-       })}
-     </List>
-   </Grid>
+    <Grid container spacing={3} className={classes.container}>
+      <List component="nav" aria-label="main mailbox folders" className={classes.list}>
+        {currentCategory.map(item => {
+          return (
+            <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}>
+              <Brightness1Icon className={classes.icons}/>
+              <ListItemText primary={item.name}/>
+            </ListItem>
+          );
+        })}
+      </List>
+    </Grid>
   );
 };
 

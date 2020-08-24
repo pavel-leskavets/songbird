@@ -12,15 +12,15 @@ const useStyles = makeStyles(() => ({
   questionThemes: {
     margin: '.8rem 0',
     backgroundColor: '#128a73'
-    },
+  },
   activeCategory: {
     margin: '.8rem 0',
     backgroundColor: '#128a73',
-    opacity: '.75',
+    opacity: '.75'
   }
 }));
 
-const Header = ({ categories, currentLevel }) => {
+const Header = ({ categories, currentLevel, score }) => {
   const classes = useStyles();
 
   return (
@@ -30,21 +30,21 @@ const Header = ({ categories, currentLevel }) => {
           <Typography variant="h3">Song<span className={classes.title}>Bird</span></Typography>
         </Grid>
         <Grid item xs={6}>
-          <Box textAlign="right" fontSize={20}>Score: 25</Box>
+          <Box textAlign="right" fontSize={20}>Score: {score}</Box>
         </Grid>
       </Grid>
-        {categories
-          .map((category, idx) => {
-            return (
-              <Grid container
-                    justify="center"
-                    item xs={2}
-                    key={uuid()}
-                    className={idx === currentLevel ? classes.activeCategory : classes.questionThemes}>
-                {category}
-              </Grid>
-            );
-          })}
+      {categories
+        .map((category, idx) => {
+          return (
+            <Grid container
+                  justify="center"
+                  item xs={2}
+                  key={uuid()}
+                  className={idx === currentLevel ? classes.activeCategory : classes.questionThemes}>
+              {category}
+            </Grid>
+          );
+        })}
     </Grid>
   );
 };

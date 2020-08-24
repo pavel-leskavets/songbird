@@ -4,6 +4,7 @@ import { Button, Container, Grid, makeStyles } from '@material-ui/core';
 import Header from '../components/Header';
 import birdsData from '../data/BirdsData';
 import GameField from '../components/GameField';
+import Congratulations from '../components/Congratulations';
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
@@ -20,15 +21,22 @@ const Main = () => {
   const [currentLevel, setCurrentLevel] = useState(0);
   const [randomBird, setRandomBird] = useState(null);
   const [isGuessed, setIsGuessed] = useState(false)
+  const [score, setScore] = useState(0);
   const classes = useStyles();
 
   const buttonHandler = (value) => {
-    setIsGuessed(value);
+    if (value) {
+      setIsGuessed(value);
+    }
   }
 
   const changeLevel = () => {
+    const isLastLevel = currentLevel === birdsData.birds.length - 1;
+    if (isLastLevel) {
+      setScore(0)
+    }
     setIsGuessed(false);
-    setCurrentLevel(currentLevel === birdsData.birds.length - 1 ? 0 : currentLevel + 1)
+    setCurrentLevel(isLastLevel ? 0 : currentLevel + 1)
   };
 
 
@@ -39,8 +47,15 @@ const Main = () => {
 
   return (
     <Container maxWidth="lg">
-      <Header categories={birdsData.categories} currentLevel={currentLevel}/>
-      <GameField randomBird={randomBird} currentCategory={birdsData.birds[currentLevel]} isGuessed={isGuessed} buttonHandler={buttonHandler}/>
+      <Header categories={birdsData.categories} currentLevel={currentLevel} score={score}/>
+      {/*<GameField randomBird={randomBird}*/}
+      {/*           isGuessed={isGuessed}*/}
+      {/*           currentLevel={currentLevel}*/}
+      {/*           currentCategory={birdsData.birds[currentLevel]}*/}
+      {/*           buttonHandler={buttonHandler}*/}
+      {/*           score={score}*/}
+      {/*           setScore={setScore}/>*/}
+                 <Congratulations/>
       <Grid container spacing={3} className={classes.buttonContainer}>
         <Button className={classes.button} variant="contained" color="primary" disabled={!isGuessed}
                 onClick={() => changeLevel()}>
