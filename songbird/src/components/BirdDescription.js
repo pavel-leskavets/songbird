@@ -6,23 +6,17 @@ import MaterialAudioPlayer from './MaterialAudioPlayer';
 const useStyles = makeStyles(() => ({
   container: {
     width: '100%',
+    height: '40vh',
     margin: '1rem 0 0 .8rem',
     backgroundColor: '#212120',
     borderRadius: '5px',
-    border: '1px solid #212120'
-  },
-  audioPlayerContainer: {
-    width: '100%'
   },
   questionTitleBox: {
     width: '95%',
     height: '25px',
-    margin: '5px'
   },
   birdsDescription: {
-    height: '76px',
-    padding: 0,
-    margin: 0
+    fontSize: '.95em'
   }
 }));
 
@@ -38,14 +32,13 @@ const BirdDescription = ({ selectedBird }) => {
           <img width="240px" height="160px" src={selectedBird.image} alt="act"/>
         </Grid>
         <Grid item xs={7}>
-          <Box display='flex' flexDirection='column' alignItems="center" className={classes.audioPlayerContainer}>
-            {<h3 className={classes.questionTitleBox}>{selectedBird.name}</h3>}
-            {<h4 className={classes.questionTitleBox}>{selectedBird.species}</h4>}
+          <Box display='flex' flexDirection='column' alignItems="flex-start">
+            <h3 className={classes.questionTitleBox}>{selectedBird.name} ({selectedBird.species})</h3>
             <MaterialAudioPlayer width={95} src={selectedBird ? selectedBird.audio : ''}/>
           </Box>
         </Grid>
         <Grid item xs={12}>
-          {selectedBird && <p className={classes.birdsDescription}>{selectedBird.description}</p>}
+          {selectedBird && <div className={classes.birdsDescription}>{selectedBird.description}</div>}
         </Grid>
       </>
       }

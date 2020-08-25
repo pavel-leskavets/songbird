@@ -1,41 +1,33 @@
 import React from 'react';
-import { makeStyles, Box, Grid, Button, Container } from '@material-ui/core';
-import Header from './Header';
-import birdsData from '../data/BirdsData';
+import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-  container: {
+  textContainer: {
     height: '40vh',
-    marginTop: '1rem',
-    backgroundColor: '#000',
-    borderRadius: '5px'
+    margin: '1rem 0',
+    backgroundColor: '#212120',
+    borderRadius: '5px',
+    textAlign: 'center'
   },
-  buttonContainer: {
-    paddingTop: '10px'
+  title: {
+    paddingTop: '10vh'
   },
   button: {
     width: '100%',
     backgroundColor: '#128a73'
-  },
-  audioPlayerContainer: {
-    width: '100%',
-    height: '200px'
-  },
-  questionTitleBox: {
-    width: '95%',
-    height: '50px',
-    borderBottom: '1px solid #fcfcfc'
   }
 }));
 
-const Congratulations = () => {
+const Congratulations = ({score, resetGame}) => {
   const classes = useStyles();
 
-
   return (
-    <Grid container spacing={3} className={classes.buttonContainer}>
-      <Grid item xs={12} className={classes.container}>fffgfg</Grid>
-      <Button className={classes.button} variant="contained" color="primary">
+    <Grid container spacing={3}>
+      <Grid item xs={12} className={classes.textContainer} >
+        <Typography className={classes.title} variant="h3">{score === 0 ? 'Это фиаско!' : 'Поздравляем!'}</Typography>
+        <Typography>Вы прошли викторину и набрали {score} баллов из 30 возможных!</Typography>
+      </Grid>
+      <Button className={classes.button} variant="contained" color="primary" onClick={() => resetGame()}>
         Play again
       </Button>
     </Grid>

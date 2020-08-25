@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
     marginTop: '1rem',
     backgroundColor: '#212120',
     borderRadius: '5px',
-    border: '1px solid #212120'
+    border: '.5px solid #212120'
   },
   list: {
     width: '100%',
@@ -29,9 +29,15 @@ const useStyles = makeStyles(() => ({
     color: '#303030'
   },
   wrongAnswerIcon: {
+    width: '.9rem',
+    height: '.9rem',
+    paddingRight: '5px',
     color: '#a60b00'
   },
   correctAnswerIcon: {
+    width: '.9rem',
+    height: '.9rem',
+    paddingRight: '5px',
     color: '#128a73'
   }
 }));
@@ -62,8 +68,8 @@ const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandle
       }
       buttonHandler(isRightAnswer);
       playAudio(isRightAnswer);
-      setSelectedBird(currentCategory.find(item => item.id === birdId));
     }
+    setSelectedBird(currentCategory.find(item => item.id === birdId));
     selectedIds = [...selectedIds, birdId];
   };
 
@@ -77,7 +83,9 @@ const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandle
         {currentCategory.map(item => {
           return (
             <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}>
-              <Brightness1Icon className={classes.icons}/>
+              {!selectedIds.includes(item.id) && <Brightness1Icon className={classes.icons}/>}
+              {selectedIds.includes(item.id) && item.id === randomBird.id && <Brightness1Icon className={classes.correctAnswerIcon}/>}
+              {selectedIds.includes(item.id) && !isGuessed && item.id !== randomBird.id && <Brightness1Icon className={classes.wrongAnswerIcon}/>}
               <ListItemText primary={item.name}/>
             </ListItem>
           );

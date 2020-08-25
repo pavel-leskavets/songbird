@@ -6,9 +6,10 @@ import 'react-h5-audio-player/lib/styles.css';
 const useStyles = makeStyles(() => ({
   player: {
     width: '95%',
+    height: '100%',
     backgroundColor: 'transparent',
     color: '#128a73',
-    marginTop: '20px',
+    marginTop: '15px',
     '& .rhap_time': {
       color: '#fcfcfc',
     },
