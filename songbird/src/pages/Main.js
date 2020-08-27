@@ -8,8 +8,7 @@ import Congratulations from '../components/Congratulations';
 
 const useStyles = makeStyles(() => ({
   buttonContainer: {
-    paddingTop: '10px',
-    marginTop: '10px'
+    marginTop: '1.5em'
   },
   button: {
     width: '100%',
@@ -19,10 +18,7 @@ const useStyles = makeStyles(() => ({
       color: '#fcfcfc'
     }
   },
-
-
 }));
-
 
 const Main = () => {
   const [currentLevel, setCurrentLevel] = useState(0);
@@ -30,6 +26,7 @@ const Main = () => {
   const [isGuessed, setIsGuessed] = useState(false);
   const [isGameFieldShow, setIsGameFieldShow] = useState(true);
   const [score, setScore] = useState(0);
+  const [selectedIds, setSelectedIds] = useState([]);
   const classes = useStyles();
 
   const buttonHandler = (value) => {
@@ -43,16 +40,18 @@ const Main = () => {
     if (isLastLevel) {
       setIsGameFieldShow(false);
     }
+    setSelectedIds([]);
     setIsGuessed(false);
     setCurrentLevel(isLastLevel ? 0 : currentLevel + 1);
   };
 
   const resetGame = () => {
-    setIsGameFieldShow(true);
     setScore(0);
+    setSelectedIds([]);
     setCurrentLevel(0);
+    setIsGuessed(false);
+    setIsGameFieldShow(true);
   };
-
 
   useEffect(() => {
     const currentBird = birdsData.birds[currentLevel][Math.floor(Math.random() * birdsData.birds[currentLevel].length)];
@@ -70,8 +69,12 @@ const Main = () => {
                    currentCategory={birdsData.birds[currentLevel]}
                    buttonHandler={buttonHandler}
                    score={score}
-                   setScore={setScore}/>
-        <Grid container spacing={3} className={classes.buttonContainer}>
+                   setScore={setScore}
+                   selectedIds={selectedIds}
+                   setSelectedIds={setSelectedIds} />
+        <Grid container
+              spacing={3}
+              className={classes.buttonContainer}>
           <Button className={classes.button} variant="contained" color="primary" disabled={!isGuessed} onClick={() => changeLevel()}>
             Next Level
           </Button>

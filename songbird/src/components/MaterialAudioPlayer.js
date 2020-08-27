@@ -5,11 +5,11 @@ import 'react-h5-audio-player/lib/styles.css';
 
 const useStyles = makeStyles(() => ({
   player: {
-    width: '95%',
-    height: '100%',
+    width: '80%',
     backgroundColor: 'transparent',
+    padding: '5px 0',
+    margin: '5px 0',
     color: '#128a73',
-    marginTop: '15px',
     '& .rhap_time': {
       color: '#fcfcfc',
     },
@@ -28,14 +28,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MaterialAudioPlayer = ({ width, src, playerRef }) => {
+const MaterialAudioPlayer = ({ src, playerRef }) => {
   const classes = useStyles();
 
   return <AudioPlayer
     ref={playerRef}
     className={classes.player}
     autoPlayAfterSrcChange={false}
-    width={`${width}%`}
     src={src}
   />;
 };

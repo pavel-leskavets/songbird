@@ -3,20 +3,20 @@ import { makeStyles, Grid, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   textContainer: {
-    height: '40vh',
-    margin: '1rem 0',
+    height: '250px',
+    marginTop: '1.5em',
     backgroundColor: '#212120',
     borderRadius: '5px',
     textAlign: 'center'
   },
-  title: {
-    paddingTop: '10vh'
-  },
   button: {
+    marginTop: '.8em',
     width: '100%',
     backgroundColor: '#128a73'
   }
 }));
+
+const MAX_SCORE = 30;
 
 const Congratulations = ({score, resetGame}) => {
   const classes = useStyles();
@@ -24,8 +24,10 @@ const Congratulations = ({score, resetGame}) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} className={classes.textContainer} >
-        <Typography className={classes.title} variant="h3">{score === 0 ? 'Это фиаско!' : 'Поздравляем!'}</Typography>
-        <Typography>Вы прошли викторину и набрали {score} баллов из 30 возможных!</Typography>
+        <Typography variant="h3">
+          {score === MAX_SCORE ? 'Вы абсолютный чемпион по распознаванию чириканья' : 'Поздравляем!'}
+        </Typography>
+        <Typography>Вы прошли викторину и набрали {score} баллов из {MAX_SCORE} возможных!</Typography>
       </Grid>
       <Button className={classes.button} variant="contained" color="primary" onClick={() => resetGame()}>
         Play again

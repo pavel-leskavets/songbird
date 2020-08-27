@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { List, ListItem, ListItemText, Grid, makeStyles } from '@material-ui/core';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import uuid from 'react-uuid';
 
 const useStyles = makeStyles(() => ({
   container: {
-    width: '100%',
+    // width: '100%',
     marginTop: '1rem',
     backgroundColor: '#212120',
     borderRadius: '5px',
@@ -42,12 +42,11 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const pointsStep = 1;
-const initialPoints = 5;
-let selectedIds = [];
+const POINTS_STEP = 1;
+const INITIAL_POINTS = 5;
 
-const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandler, playerRef, isGuessed, score, setScore }) => {
-  const [pointPerAnswer, setPointPerAnswer] = useState(initialPoints);
+const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandler, isGuessed, score, setScore, playerRef, selectedIds, setSelectedIds }) => {
+  const [pointPerAnswer, setPointPerAnswer] = useState(INITIAL_POINTS);
   const classes = useStyles();
 
   const playAudio = (isRightAnswer) => {
@@ -62,20 +61,16 @@ const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandle
       if (isRightAnswer) {
         playerRef.current.audio.current.pause();
         setScore(score + pointPerAnswer);
-        setPointPerAnswer(initialPoints);
+        setPointPerAnswer(INITIAL_POINTS);
       } else {
-        setPointPerAnswer(pointPerAnswer - pointsStep);
+        setPointPerAnswer(pointPerAnswer - POINTS_STEP);
       }
       buttonHandler(isRightAnswer);
       playAudio(isRightAnswer);
     }
     setSelectedBird(currentCategory.find(item => item.id === birdId));
-    selectedIds = [...selectedIds, birdId];
+    setSelectedIds(!isGuessed ? [...selectedIds, birdId] : [...selectedIds]);
   };
-
-  useEffect(() => {
-    selectedIds = [];
-  }, [currentCategory]);
 
   return (
     <Grid container spacing={3} className={classes.container}>
@@ -83,9 +78,10 @@ const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandle
         {currentCategory.map(item => {
           return (
             <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}>
-              {!selectedIds.includes(item.id) && <Brightness1Icon className={classes.icons}/>}
-              {selectedIds.includes(item.id) && item.id === randomBird.id && <Brightness1Icon className={classes.correctAnswerIcon}/>}
-              {selectedIds.includes(item.id) && !isGuessed && item.id !== randomBird.id && <Brightness1Icon className={classes.wrongAnswerIcon}/>}
+              {selectedIds.includes(item.id)
+                ? <Brightness1Icon className={item.id === randomBird.id ? classes.correctAnswerIcon : classes.wrongAnswerIcon}/>
+                : <Brightness1Icon className={classes.icons}/>
+              }
               <ListItemText primary={item.name}/>
             </ListItem>
           );
