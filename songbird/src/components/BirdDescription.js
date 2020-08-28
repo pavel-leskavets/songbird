@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: '5px'
   },
   birdsDescription: {
+    height: '80px',
     fontSize: '.9em'
   },
   tip: {
@@ -27,7 +28,7 @@ const BirdDescription = ({ selectedBird }) => {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={3} className={classes.container}>
+    <Grid container alignItems='flex-start' spacing={3} className={classes.container}>
       {selectedBird &&
       <>
         <Grid container item xs={12} justify='center' alignItems='center'>
