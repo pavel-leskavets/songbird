@@ -5,7 +5,7 @@ import 'react-h5-audio-player/lib/styles.css';
 
 const useStyles = makeStyles(() => ({
   player: {
-    width: '80%',
+    width: '95%',
     backgroundColor: 'transparent',
     padding: '5px 0',
     margin: '5px 0',

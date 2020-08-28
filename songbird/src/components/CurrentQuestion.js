@@ -1,12 +1,16 @@
 import React from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
-
 import MaterialAudioPlayer from './MaterialAudioPlayer';
 
 const useStyles = makeStyles(() => ({
   container: {
     marginTop: '1.5em',
     backgroundColor: '#212120',
+    borderRadius: '5px'
+  },
+  image: {
+    width: '270px',
+    height: '180px',
     borderRadius: '5px'
   },
   questionTitleBox: {
@@ -16,14 +20,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-
 const CurrentQuestion = ({ randomBird, isGuessed, playerRef }) => {
   const classes = useStyles();
 
   return (
     <Grid container spacing={3} className={classes.container}>
       <Grid container justify="center" item xs={12} lg={3}>
-        <img width="275px" height="185px" src={isGuessed ? randomBird.image : 'images/question.png'} alt="current question"/>
+        <img src={isGuessed ? randomBird.image : 'images/question.png'} alt="current question" className={classes.image}/>
       </Grid>
       <Grid container justify='center' item xs={12} lg={9}>
         <h3 className={classes.questionTitleBox}>{isGuessed ? randomBird.name : '*******'}</h3>

@@ -9,6 +9,10 @@ const useStyles = makeStyles(() => ({
     borderRadius: '5px',
     textAlign: 'center'
   },
+  congratulation: {
+    fontSize: '2em',
+    paddingTop: '40px'
+  },
   button: {
     marginTop: '.8em',
     width: '100%',
@@ -23,8 +27,8 @@ const Congratulations = ({score, resetGame}) => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} className={classes.textContainer} >
-        <Typography variant="h3">
+      <Grid item xs={12} className={classes.textContainer}>
+        <Typography variant="h3" className={classes.congratulation}>
           {score === MAX_SCORE ? 'Вы абсолютный чемпион по распознаванию чириканья' : 'Поздравляем!'}
         </Typography>
         <Typography>Вы прошли викторину и набрали {score} баллов из {MAX_SCORE} возможных!</Typography>

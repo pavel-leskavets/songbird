@@ -1,43 +1,62 @@
 import React, { createRef, useEffect, useState } from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import CurrentQuestion from './CurrentQuestion';
 import AnswerList from './AnswerList';
 import BirdDescription from './BirdDescription';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    // minWidth: '300px',
-    // maxWidth: '100%'
-  }
-}))
+const POINTS_STEP = 1;
+const INITIAL_POINTS = 5;
 
-const GameField = ({ randomBird, currentLevel, currentCategory, isGuessed, buttonHandler, score, setScore, selectedIds, setSelectedIds }) => {
-  const classes = useStyles();
+const GameField = ({ randomBird, currentCategoryList, isGuessed, setIsGuessed, score, setScore }) => {
   const playerRef = createRef();
+
+  const [selectedIds, setSelectedIds] = useState([]);
   const [selectedBird, setSelectedBird] = useState(null);
+  const [pointPerAnswer, setPointPerAnswer] = useState(INITIAL_POINTS);
+
+  const playAudio = (isRightAnswer) => {
+    const audio = document.createElement('audio');
+    audio.src = isRightAnswer ? './sounds/success.wav' : './sounds/error.wav';
+    audio.play().then();
+  };
+
+  const calculateScore = isRightAnswer => {
+    if (isRightAnswer) {
+      setIsGuessed(isRightAnswer);
+      setScore(score + pointPerAnswer);
+      setPointPerAnswer(INITIAL_POINTS);
+      playerRef.current.audio.current.pause();
+    } else {
+      setPointPerAnswer(pointPerAnswer - POINTS_STEP);
+    }
+  }
+
+  const checkAnswer = (birdId) => {
+    if (!selectedIds.includes(birdId) && !isGuessed) {
+      const isRightAnswer = birdId === randomBird.id;
+      calculateScore(isRightAnswer)
+      playAudio(isRightAnswer);
+    }
+    setSelectedBird(currentCategoryList.find(item => item.id === birdId));
+    setSelectedIds(!isGuessed ? [...selectedIds, birdId] : [...selectedIds]);
+  };
 
   useEffect(() => {
+    setSelectedIds([]);
     setSelectedBird(null);
-  }, [currentCategory]);
+  }, [currentCategoryList]);
 
   return (
     <>
       <CurrentQuestion randomBird={randomBird} isGuessed={isGuessed} playerRef={playerRef}/>
       <Grid container justify='center' spacing={3}>
-        <Grid item xs={12} md={6} className={classes.container}>
+        <Grid item xs={12} md={6}>
           <AnswerList randomBird={randomBird}
-                      currentLevel={currentLevel}
-                      currentCategory={currentCategory}
-                      setSelectedBird={setSelectedBird}
-                      buttonHandler={buttonHandler}
-                      isGuessed={isGuessed}
-                      score={score}
-                      setScore={setScore}
-                      playerRef={playerRef}
-                      selectedIds={selectedIds}
-                      setSelectedIds={setSelectedIds}/>
+                      currentCategoryList={currentCategoryList}
+                      checkAnswer={checkAnswer}
+                      selectedIds={selectedIds}/>
         </Grid>
-        <Grid container item xs={12} md={6} className={classes.container}>
+        <Grid container item xs={12} md={6}>
           <BirdDescription selectedBird={selectedBird} isGuessed={isGuessed}/>
         </Grid>
       </Grid>

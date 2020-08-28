@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { List, ListItem, ListItemText, Grid, makeStyles } from '@material-ui/core';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import uuid from 'react-uuid';
 
 const useStyles = makeStyles(() => ({
   container: {
-    // width: '100%',
-    marginTop: '1rem',
+    paddingRight: 0,
+    marginTop: '.7em',
     backgroundColor: '#212120',
     borderRadius: '5px',
-    border: '.5px solid #212120'
+    border: '.5px solid #212120',
+    '@media (min-width:960px)': {
+      width: '100%'
+    }
   },
   list: {
     width: '100%',
@@ -42,40 +45,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const POINTS_STEP = 1;
-const INITIAL_POINTS = 5;
-
-const AnswerList = ({ randomBird, currentCategory, setSelectedBird, buttonHandler, isGuessed, score, setScore, playerRef, selectedIds, setSelectedIds }) => {
-  const [pointPerAnswer, setPointPerAnswer] = useState(INITIAL_POINTS);
+const AnswerList = ({ randomBird, currentCategoryList, checkAnswer, selectedIds }) => {
   const classes = useStyles();
-
-  const playAudio = (isRightAnswer) => {
-    const audio = document.createElement('audio');
-    audio.src = isRightAnswer ? './sounds/success.wav' : './sounds/error.wav';
-    audio.play().then();
-  };
-
-  const checkAnswer = (birdId) => {
-    if (!selectedIds.includes(birdId) && !isGuessed) {
-      const isRightAnswer = birdId === randomBird.id;
-      if (isRightAnswer) {
-        playerRef.current.audio.current.pause();
-        setScore(score + pointPerAnswer);
-        setPointPerAnswer(INITIAL_POINTS);
-      } else {
-        setPointPerAnswer(pointPerAnswer - POINTS_STEP);
-      }
-      buttonHandler(isRightAnswer);
-      playAudio(isRightAnswer);
-    }
-    setSelectedBird(currentCategory.find(item => item.id === birdId));
-    setSelectedIds(!isGuessed ? [...selectedIds, birdId] : [...selectedIds]);
-  };
 
   return (
     <Grid container spacing={3} className={classes.container}>
       <List component="nav" aria-label="main mailbox folders" className={classes.list}>
-        {currentCategory.map(item => {
+        {currentCategoryList.map(item => {
           return (
             <ListItem id={item.id} key={uuid()} className={classes.listItem} onClick={() => checkAnswer(item.id)}>
               {selectedIds.includes(item.id)

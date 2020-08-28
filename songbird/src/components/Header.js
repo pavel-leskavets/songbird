@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import uuid from 'react-uuid';
 import { makeStyles, Typography, Box, Grid } from '@material-ui/core';
 
@@ -22,8 +22,12 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Header = ({ categories, currentLevel, score }) => {
+const Header = ({ categories, currentLevel, score, randomBird }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    console.log( randomBird ? `Верный ответ в категории ${categories[currentLevel]} ${randomBird.name}` : '')
+  }, [categories, currentLevel, randomBird])
 
   return (
     <>
@@ -36,7 +40,7 @@ const Header = ({ categories, currentLevel, score }) => {
           .map((category, idx) => {
             return (
               <Grid
-                item xs={6} sm={4} md={3} lg={2}
+                item xs={6} sm={4} lg={2}
                 key={uuid()}
                 className={idx === currentLevel ? classes.activeCategory : ''}>
                 {category}

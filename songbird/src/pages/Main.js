@@ -17,39 +17,34 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#303030',
       color: '#fcfcfc'
     }
-  },
+  }
 }));
 
+const INITIAL_SCORE = 0;
+const INITIAL_LEVEL = 0;
+
 const Main = () => {
-  const [currentLevel, setCurrentLevel] = useState(0);
-  const [randomBird, setRandomBird] = useState(null);
-  const [isGuessed, setIsGuessed] = useState(false);
-  const [isGameFieldShow, setIsGameFieldShow] = useState(true);
-  const [score, setScore] = useState(0);
-  const [selectedIds, setSelectedIds] = useState([]);
   const classes = useStyles();
 
-  const buttonHandler = (value) => {
-    if (value) {
-      setIsGuessed(value);
-    }
-  };
+  const [score, setScore] = useState(INITIAL_SCORE);
+  const [isGuessed, setIsGuessed] = useState(false);
+  const [randomBird, setRandomBird] = useState(null);
+  const [currentLevel, setCurrentLevel] = useState(INITIAL_LEVEL);
+  const [isGameFieldShow, setIsGameFieldShow] = useState(true);
 
   const changeLevel = () => {
     const isLastLevel = currentLevel === birdsData.birds.length - 1;
     if (isLastLevel) {
       setIsGameFieldShow(false);
     }
-    setSelectedIds([]);
     setIsGuessed(false);
-    setCurrentLevel(isLastLevel ? 0 : currentLevel + 1);
+    setCurrentLevel(isLastLevel ? INITIAL_LEVEL : currentLevel + 1);
   };
 
   const resetGame = () => {
-    setScore(0);
-    setSelectedIds([]);
-    setCurrentLevel(0);
+    setScore(INITIAL_SCORE);
     setIsGuessed(false);
+    setCurrentLevel(INITIAL_LEVEL);
     setIsGameFieldShow(true);
   };
 
@@ -60,22 +55,21 @@ const Main = () => {
 
   return (
     <Container maxWidth="lg">
-      <Header categories={birdsData.categories} currentLevel={currentLevel} score={score}/>
+      <Header categories={birdsData.categories} currentLevel={currentLevel} score={score} randomBird={randomBird}/>
       {isGameFieldShow &&
       <>
         <GameField randomBird={randomBird}
+                   currentCategory={birdsData.categories[currentLevel]}
+                   currentCategoryList={birdsData.birds[currentLevel]}
                    isGuessed={isGuessed}
-                   currentLevel={currentLevel}
-                   currentCategory={birdsData.birds[currentLevel]}
-                   buttonHandler={buttonHandler}
+                   setIsGuessed={setIsGuessed}
                    score={score}
-                   setScore={setScore}
-                   selectedIds={selectedIds}
-                   setSelectedIds={setSelectedIds} />
+                   setScore={setScore}/>
         <Grid container
               spacing={3}
               className={classes.buttonContainer}>
-          <Button className={classes.button} variant="contained" color="primary" disabled={!isGuessed} onClick={() => changeLevel()}>
+          <Button className={classes.button} variant="contained" color="primary" disabled={!isGuessed}
+                  onClick={() => changeLevel()}>
             Next Level
           </Button>
         </Grid>
